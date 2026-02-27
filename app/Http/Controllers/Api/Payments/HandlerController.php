@@ -623,4 +623,21 @@ class HandlerController extends Controller
 
         return $response;
     }
+
+    public function getExchange($origin, $destination = "MXN", $total = 0){        
+        $items = DB::select('SELECT operation, exchange_rate
+                                FROM payments_exchange_rate
+                            WHERE origin = :origin AND destination = :destination
+                            LIMIT 1', 
+                        [
+                            'origin' => $origin,
+                            'destination' => $destination
+                        ]);
+
+        if($items[0]->operation == "multiplication"):
+            return number_format( ( $items[0]->exchange_rate * $total ) , 2, '.', '');            
+        else:
+            return number_format( ( $total / $items[0]->exchange_rate ) , 2, '.', '');       
+        endif;
+    }
 }
