@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Openpay\Data\Openpay;
 use Openpay\Data\OpenpayApiRequestError;
 use App\Models\OpenpayTransaction;
+use Illuminate\Support\Facades\DB;
 
 class HandlerController extends Controller
 {
@@ -24,7 +25,7 @@ class HandlerController extends Controller
     public function index(Request $request, StripeRepository $handlerStripe, PaypalRepository $handlerPaypal, MifelRepository $handlerMifel, SantanderRepository $handlerSantander)
     {
         $validator = Validator::make($request->all(), [
-            'type' => 'required|in:STRIPE,STRIPE-2,PAYPAL,MIFEL,PAYPAL-1,PAYPAL-V2,PAYPAL-V3,SANTANDER',
+            'type' => 'required|in:STRIPE,STRIPE-2,PAYPAL,MIFEL,PAYPAL-1,PAYPAL-V2,PAYPAL-V3,SANTANDER,OPENPAY',
             'id' => 'integer',
             'language' => 'required|in:en,es',
             'success_url' => 'required',
@@ -64,6 +65,9 @@ class HandlerController extends Controller
         endif;
         if ($request->type == "SANTANDER"):
             $items = $handlerSantander->check($request);
+        endif;
+        if ($request->type == "OPENPAY"):
+            return $items = $this->openpayOrders($request);
         endif;
 
         if ($items['status'] == false) {
@@ -558,5 +562,65 @@ class HandlerController extends Controller
             default:
                 return $message;
         }
+    }
+
+    public function openpayOrders(Request $request)
+    {
+        $response = [
+            "status" => false,
+        ];
+
+        $data = $request->all();
+
+        $rez = DB::select("
+            SELECT rez.id, rez.currency, site.payment_domain,
+                ROUND(COALESCE(SUM(s.total_sales),0),2) as total_sales,
+                ROUND(COALESCE(SUM(p.total_payments),0),2) as total_payments
+            FROM reservations AS rez
+            LEFT JOIN (
+                SELECT reservation_id, ROUND(COALESCE(SUM(total),0),2) as total_sales
+                FROM sales
+                WHERE deleted_at IS NULL AND sales.sale_type_id <> 3
+                GROUP BY reservation_id
+            ) as s ON s.reservation_id = rez.id
+            LEFT JOIN (
+                SELECT reservation_id,
+                ROUND(SUM(CASE 
+                    WHEN operation='multiplication' THEN total * exchange_rate
+                    WHEN operation='division' THEN total / exchange_rate
+                    ELSE total END),2) AS total_payments
+                FROM payments
+                GROUP BY reservation_id
+            ) as p ON p.reservation_id = rez.id
+            INNER JOIN sites as site ON site.id = rez.site_id
+            WHERE rez.id = :code AND rez.is_cancelled = 0
+            GROUP BY rez.id, site.payment_domain
+        ", [
+            'code' => $data['id']
+        ]);
+
+        if (sizeof($rez) <= 0) {
+            $response['code'] = "cancelled";
+            $response['message'] = "Your reservation has been cancelled, if you want to reactivate it contact us.";
+            return $response;
+        }
+
+        $total = $rez[0]->total_sales - $rez[0]->total_payments;
+
+        if ($total <= 0) {
+            $response['code'] = "payments";
+            $response['message'] = "No payments to be made";
+            return $response;
+        }
+        
+        $amount = $this->getExchange($rez[0]->currency, $rez[0]->currency, $total);
+
+        $response['status'] = true;
+        $response['data'] = [
+            'amount' => $amount,
+            'currency' => $rez[0]->currency,
+        ];
+
+        return $response;
     }
 }
