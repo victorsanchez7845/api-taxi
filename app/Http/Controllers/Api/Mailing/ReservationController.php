@@ -114,13 +114,14 @@ class ReservationController extends Controller
 
         $paypal_URL = $this->makePaymentURL( $request->reservation_id, $request->lang, $data, 'PAYPAL' );
         $stripe_URL = $this->makePaymentURL( $request->reservation_id, $request->lang, $data, 'STRIPE' );
+        $openpay_URL = "https://caribbean-transfers.com/easy-payment?code=$data->reservation_id&email=$data->client_email&language=$request->lang&type=OPENPAY";
 
         App::setLocale($request['lang']);
 
         $site = Site::find($data->site_id ?? 1);
         $provider = Provider::where('destination_id', $data->destination_id)->first();
 
-        return view('mailing.sendPaymentRequest', ['data' => $data, 'site' => $site, 'paypal_URL' => $paypal_URL, 'stripe_URL' => $stripe_URL, 'provider' => $provider]);
+        return view('mailing.sendPaymentRequest', ['data' => $data, 'site' => $site, 'paypal_URL' => $paypal_URL, 'stripe_URL' => $stripe_URL, 'openpay_URL' => $openpay_URL, 'provider' => $provider]);
     }
 
     private static function makePaymentURL($reservation_id, $lang, $data, $type = "STRIPE"){

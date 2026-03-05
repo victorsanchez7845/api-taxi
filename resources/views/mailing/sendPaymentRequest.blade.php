@@ -1,5 +1,16 @@
 @php    
     $lang = app()->getLocale();
+
+    $btn_margin_right_paypal_en = '18px';
+    $btn_margin_right_paypal_es = '18px';
+
+    $btn_margin_right_openpay_en = '15px';
+    $btn_margin_right_openpay_es = '15px';
+
+    $btn_margin_right_stripe_en = '17px';
+    $btn_margin_right_stripe_es = '17px';
+
+    $size_of_payment_btns = '168px';
 @endphp
 <!DOCTYPE html>
 <html lang="{{$lang}}">
@@ -169,35 +180,47 @@
                                 <tbody>
                                     <tr>
                                         <td>
+                                            <a class="main-title-btn" style="color: white;" href="{{ $paypal_URL }}">{{ $lang == "en" ? 'Complete Your Reservation' : 'Complete su reserva' }}</a>
+                                            <p style="margin-top: 20px; margin-bottom: 10px;">{{ $lang == "en" ? 'Secure your transfer now at our special online rate:' : 'Asegura tu traslado ahora con nuestra tarifa especial online:' }}</p>
+                                            
+                                            <table>
+                                                <tbody>
+                                                    <tr style="height: 62px;">
+                                                        <td style="vertical-align: center;">
+                                                            <a class="link-btn" style="width: {{ $size_of_payment_btns }}; color: white; margin-right: {{ $lang == "en" ? $btn_margin_right_paypal_en : $btn_margin_right_paypal_es }};" href="{{ $paypal_URL }}" title="{{ $lang == "en" ? 'Pay with PayPal' : 'Pagar con PayPal'  }}">{{ $lang == "en" ? 'Pay with PayPal' : 'Pagar con PayPal'  }}</a>
+                                                        </td>
+                                                        <td style="vertical-align: center;">
+                                                            <img style="max-width: 160px;" width="159.95" height="57.36" src="https://api.caribbean-transfers.com/img/paypal-credit-card-logo.png" alt="PAYPAL">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table>
+                                                <tbody>
+                                                    <tr style="height: 62px;">
+                                                        <td style="vertical-align: center;">
+                                                            <a class="link-btn" style="width: {{ $size_of_payment_btns }}; color: white; margin-right: {{ $lang == "en" ? $btn_margin_right_openpay_en : $btn_margin_right_openpay_es }};" href="{{ $openpay_URL }}" title="{{ $lang == "en" ? 'Pay with Openpay' : 'Pagar con Openpay' }}">{{ $lang == "en" ? 'Pay with Openpay' : 'Pagar con Openpay' }}</a>
+                                                        </td>
+                                                        <td style="vertical-align: center;">
+                                                            <img style="max-width: 150px; height: auto;" width="150" height="56.91" src="https://api.caribbean-transfers.com/img/LogotipoOpenpay-01.jpg" alt="OPENPAY">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table>
+                                                <tbody>
+                                                    <tr style="height: 30px;">
+                                                        <td style="vertical-align: center;">
+                                                            <a class="link-btn" style="width: {{ $size_of_payment_btns }}; color: white; margin-right: {{ $lang == "en" ? $btn_margin_right_stripe_en : $btn_margin_right_stripe_es }};" href="{{ $stripe_URL }}" title="{{ $lang == "en" ? 'Pay with Stripe' : 'Pagar con Stripe' }}">{{ $lang == "en" ? 'Pay with Stripe' : 'Pagar con Stripe' }}</a>
+                                                        </td>
+                                                        <td style="vertical-align: center;">
+                                                            <img style="max-width: 160px; margin-left: 12px; margin-top: 2px;" width="160" height="41" src="https://api.caribbean-transfers.com/img/powered_by_stripe.png" alt="STRIPE">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                                
                                             @if($lang == "en")
-                                                <a class="main-title-btn" style="color: white;" href="{{ $paypal_URL }}">Complete Your Reservation</a>
-                                                <p style="margin-top: 20px; margin-bottom: 10px;">Secure your transfer now at our special online rate:</p>
-                                                
-                                                <table>
-                                                    <tbody>
-                                                        <tr style="height: 62px;">
-                                                            <td style="vertical-align: center;">
-                                                                <a class="link-btn" style="color: white;" href="{{ $paypal_URL }}" title="Pay with PayPal">Pay with PayPal</a>
-                                                            </td>
-                                                            <td style="vertical-align: center;">
-                                                                <img style="max-width: 160px;" width="159.95" height="57.36" src="https://api.caribbean-transfers.com/img/paypal-credit-card-logo.png" alt="PAYPAL">
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <table>
-                                                    <tbody>
-                                                        <tr style="height: 30px;">
-                                                            <td style="vertical-align: center;">
-                                                                <a class="link-btn" style="color: white;" href="{{ $stripe_URL }}" title="Pay with Stripe">Pay with Stripe</a>
-                                                            </td>
-                                                            <td style="vertical-align: center;">
-                                                                <img style="max-width: 160px; margin-left: 12px; margin-top: 2px;" width="160" height="41" src="https://api.caribbean-transfers.com/img/powered_by_stripe.png" alt="STRIPE">
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                
                                                 <p style="margin-top: 10px">Hi again!</p>
                                                 <p>We noticed your booking is still pending. Prepay now to</p>
                                                 <p>confirm your transfer and avoid delays or last-minute fees.</p>
@@ -208,34 +231,6 @@
                                                 <p><strong>Hours:</strong> 7:00 am to 11:00 pm.</p>
                                                 <p>We look forward to welcoming you soon!</p>
                                             @else
-                                                <a class="main-title-btn" style="color: white;" href="{{ $paypal_URL }}">Complete su reserva</a>
-                                                <p style="margin-top: 20px; margin-bottom: 10px;">Asegura tu traslado ahora con nuestra tarifa especial online:</p>
-                                            
-                                                <table>
-                                                    <tbody>
-                                                        <tr style="height: 62px;">
-                                                            <td style="vertical-align: center;">
-                                                                <a class="link-btn" style="color: white;" href="{{ $paypal_URL }}" title="Pagar con PayPal">Pagar con PayPal</a>
-                                                            </td>
-                                                            <td style="vertical-align: center;">
-                                                                <img style="max-width: 160px;" width="159.95" height="57.36" src="https://api.caribbean-transfers.com/img/paypal-credit-card-logo.png" alt="PAYPAL">
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <table>
-                                                    <tbody>
-                                                        <tr style="height: 30px;">
-                                                            <td style="vertical-align: center;">
-                                                                <a class="link-btn" style="color: white;" href="{{ $stripe_URL }}" title="Pagar con Stripe">Pagar con Stripe</a>
-                                                            </td>
-                                                            <td style="vertical-align: center;">
-                                                                <img style="max-width: 160px; margin-left: 12px; margin-top: 2px;" width="160" height="41" src="https://api.caribbean-transfers.com/img/powered_by_stripe.png" alt="STRIPE">
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-
                                                 <p style="margin-top: 10px">¡Hola de nuevo!</p>
                                                 <p>Nos hemos dado cuenta de que tu reserva sigue pendiente. Paga por adelantado ahora para confirmar tu traslado y evitar retrasos o cargos de última hora.</p>
                                             
