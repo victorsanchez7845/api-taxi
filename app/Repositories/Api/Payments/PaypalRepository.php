@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Api\Payments;
 
+use App\Models\PaymentLink;
 use App\Traits\LoggerTrait;
 use Illuminate\Support\Facades\DB;
 
@@ -64,10 +65,21 @@ class PaypalRepository{
             $response['message'] = "No payments to be made";
             return $response;
         endif;
+
+        $total = $this->getExchange($rez[0]->currency, $rez[0]->currency, $total);
+        $currency = $rez[0]->currency;
+        if($request->link_code) {
+            $payment_link = PaymentLink::where('link_code', $request->link_code)->first();
+
+            if($payment_link && $payment_link->currency && $payment_link->amount) {
+                $currency = $payment_link->currency;
+                $total = $payment_link->amount;
+            }
+        }
         
         $data = [
-            "total" => $this->getExchange($rez[0]->currency, $rez[0]->currency, $total),
-            "currency" => $rez[0]->currency,
+            "total" => $total,
+            "currency" => $currency,
             "payment_domain" => $rez[0]->payment_domain
         ];
 
@@ -290,10 +302,21 @@ class PaypalRepository{
             $response['message'] = "No payments to be made";
             return $response;
         endif;
+
+        $total = $this->getExchange($rez[0]->currency, $rez[0]->currency, $total);
+        $currency = $rez[0]->currency;
+        if($request->link_code) {
+            $payment_link = PaymentLink::where('link_code', $request->link_code)->first();
+
+            if($payment_link && $payment_link->currency && $payment_link->amount) {
+                $currency = $payment_link->currency;
+                $total = $payment_link->amount;
+            }
+        }
         
         $data = [
-            "total" => $this->getExchange($rez[0]->currency, $rez[0]->currency, $total),
-            "currency" => $rez[0]->currency,
+            "total" => $total,
+            "currency" => $currency,
             "payment_domain" => $rez[0]->payment_domain
         ];
 

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Repositories\Api\Payments;
+
+use App\Models\PaymentLink;
 use Illuminate\Support\Facades\DB;
 
 class StripeRepository{
@@ -56,9 +58,19 @@ class StripeRepository{
             $response['message'] = "No payments to be made";
             return $response;
         endif;
+
+        $total = $this->getExchange($rez[0]->currency, "MXN", $total);
+        if($request->link_code) {
+            $payment_link = PaymentLink::where('link_code', $request->link_code)->first();
+
+            if($payment_link && $payment_link->currency && $payment_link->amount) {
+                $total = $payment_link->amount;
+                $total = $this->getExchange($payment_link->currency, "MXN", $total);
+            }
+        }
         
         $data = [
-            "total" => $this->getExchange($rez[0]->currency, "MXN", $total),
+            "total" => $total,
             "currency" => "MXN",
             "payment_domain" => $rez[0]->payment_domain
         ];

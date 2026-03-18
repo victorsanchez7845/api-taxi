@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Openpay\Data\Openpay;
 use Openpay\Data\OpenpayApiRequestError;
 use App\Models\OpenpayTransaction;
+use App\Models\PaymentLink;
 use Illuminate\Support\Facades\DB;
 
 class HandlerController extends Controller
@@ -31,6 +32,7 @@ class HandlerController extends Controller
             'success_url' => 'required',
             'cancel_url' => 'required',
             'redirect' => 'integer',
+            'link_code' => ['nullable', 'string'],
         ]);
 
         if ($validator->fails()) {
@@ -614,11 +616,20 @@ class HandlerController extends Controller
         }
         
         $amount = $this->getExchange($rez[0]->currency, $rez[0]->currency, $total);
+        $currency = $rez[0]->currency;
+        if($request->link_code) {
+            $payment_link = PaymentLink::where('link_code', $request->link_code)->first();
+
+            if($payment_link && $payment_link->currency && $payment_link->amount) {
+                $currency = $payment_link->currency;
+                $amount = $payment_link->amount;
+            }
+        }
 
         $response['status'] = true;
         $response['data'] = [
             'amount' => $amount,
-            'currency' => $rez[0]->currency,
+            'currency' => $currency,
         ];
 
         return $response;
@@ -639,5 +650,10 @@ class HandlerController extends Controller
         else:
             return number_format( ( $total / $items[0]->exchange_rate ) , 2, '.', '');       
         endif;
+    }
+
+    public function getLinkCode(Request $request, string $link_code) {
+        $payment_link = PaymentLink::where('link_code', $link_code)->first();
+        return $payment_link;
     }
 }

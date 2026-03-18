@@ -116,6 +116,9 @@ Route::middleware([Auth::class])->group(function () {
         Route::get('/payments/openpay/transaction', [HandlerController::class, 'getOpenPayTransaction'])->withoutMiddleware([Auth::class]);
         Route::post('/ipn/openpay', [VerifyController::class, 'openpay'])->withoutMiddleware([Auth::class]);
         
+        // Payment Links
+        Route::get('/payments/payment-link/{link_code}', [HandlerController::class, 'getLinkCode'])->withoutMiddleware([Auth::class]);
+        
     });
     
 });
