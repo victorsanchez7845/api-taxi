@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Payments;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Log;
 use App\Models\OpenpayClient;
 use App\Repositories\Api\Payments\StripeRepository;
 use App\Repositories\Api\Payments\StripeElementsRepository;
@@ -236,6 +237,24 @@ class HandlerController extends Controller
             'publicKey' => config('services.openpay.public'),
             'privateKey' => config('services.openpay.private'),
             'merchantId' => config('services.openpay.merchant')
+        ];
+    }
+
+    public function getPaypalKeys() {
+        $keys = $this->paypalKeys();
+        return response()->json([
+            'merchant' => $keys['merchant'],
+            'clientId' => $keys['clientId'],
+            'secret' => $keys['secret'],
+            'productionMode' => (bool) config('services.paypal.production_mode'),
+        ], 200);
+    }
+
+    private function paypalKeys() {
+        return [
+            'merchant' => config('services.paypal.merchant'),
+            'clientId' => config('services.paypal.clientId'),
+            'secret' => config('services.paypal.secret')
         ];
     }
 
@@ -655,5 +674,13 @@ class HandlerController extends Controller
     public function getLinkCode(Request $request, string $link_code) {
         $payment_link = PaymentLink::where('link_code', $link_code)->first();
         return $payment_link;
+    }
+
+    public function createPaypalOrder(Request $request,  PaypalRepository $handlerPaypal) {
+        return $handlerPaypal->ordersV2($request, true);
+    }
+
+    public function executePaypalOrder(Request $request, PaypalRepository $handlerPaypal) {
+        return $handlerPaypal->ordersCapture($request);
     }
 }

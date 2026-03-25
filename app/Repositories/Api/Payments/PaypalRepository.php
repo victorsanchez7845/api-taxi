@@ -14,9 +14,9 @@ class PaypalRepository{
 
     public function __construct() {
         $this->PayPal = [
-            "clientId" => env('PAYMENT_PAYPAL_PUBLIC', ''),
-            "clientSecret" => env('PAYMENT_PAYPAL_PRIVATE', ''),
-            "URL" => env('PAYMENT_PAYPAL_URL', 'https://api-m.paypal.com'),
+            "clientId" => env('PAYPAL_CLIENT_ID', ''),
+            "clientSecret" => env('PAYPAL_SECRET', ''),
+            "URL" => env('PAYMENT_PAYPAL_URL', 'https://api-m.sandbox.paypal.com'),
         ];
     }
 
@@ -257,7 +257,7 @@ class PaypalRepository{
         return $response;
     }
 
-    public function ordersV2($request){
+    public function ordersV2($request, $with3ds = false){
         $response = [
             "status" => false,            
         ];
@@ -362,8 +362,26 @@ class PaypalRepository{
                 "return_url" => $data['payment_domain'] . $request->success_url, 
                 "cancel_url" => $data['payment_domain'] . $request->cancel_url,
                 "locale" => $lang
-            ] 
+            ]
         ];
+
+        if($with3ds) {
+            unset($itemData["application_context"]);
+            $itemData["payment_source"] = [
+                "card" => [
+                    "attributes" => [
+                        "verification" => [
+                            "method" => "SCA_ALWAYS"
+                        ]
+                    ],
+                    "experience_context" => [
+                        "shipping_preference" => "NO_SHIPPING",
+                        "return_url" => $data['payment_domain'] . $request->success_url, 
+                        "cancel_url" => $data['payment_domain'] . $request->cancel_url,
+                    ]
+                ]
+            ];
+        }
 
         $token = $this->getToken();
         if($token == false){
@@ -374,10 +392,21 @@ class PaypalRepository{
 
         $paypalResponse = $this->createOrderV2($token, $itemData);
 
-        if ($paypalResponse === false || !isset($paypalResponse['links'])) {
-            $response['code'] = "order";
-            $response['message'] = "Error making order";
-            return $response;
+        if(!$with3ds) {
+
+            if ($paypalResponse === false || !isset($paypalResponse['links'])) {
+                $response['code'] = "order";
+                $response['message'] = "Error making order";
+                
+                return $response;
+            }
+        } else {
+            if($paypalResponse == false) {
+                $response['code'] = "order";
+                $response['message'] = "Error making order";
+                $response['data'] = $paypalResponse;
+                return $response;
+            }
         }
 
         $approvalUrl = null;
@@ -451,7 +480,6 @@ class PaypalRepository{
     public function getToken(){        
         $clientId = $this->PayPal['clientId'];
         $clientSecret = $this->PayPal['clientSecret'];
-
         // URL del endpoint de autenticación
         $url = $this->PayPal['URL'] . "/v1/oauth2/token";
 
@@ -524,6 +552,7 @@ class PaypalRepository{
 
         // Mostrar respuesta
         $orderResponse = json_decode($response, true);
+        return $orderResponse;
         
         if (isset($orderResponse['id'])) {
             return $orderResponse;
