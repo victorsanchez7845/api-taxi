@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use App\Repositories\Api\Quotation\SearchRepository;
 use App\Repositories\Api\Quotation\RatesRepository;
 use App\Repositories\Api\Quotation\DistanceRepository;
+use App\Models\ScheduleRestriction;
 use Carbon\Carbon;
 
 class SearchController extends Controller
@@ -112,20 +113,17 @@ class SearchController extends Controller
                 ], 404);
             }
 
-            if(false) { // Esta protección, es sólo por si de emergencia se necesitan bloquear los servicios el mero 31 (temporal)
-                $start_date = '2025-12-31 00:00';
-                $end_date   = '2026-01-01 23:59';
-        
-                $one_way_date = Carbon::createFromFormat('Y-m-d H:i', $request['start']['pickup']);
-                if(isset($request['end']['pickup'])) $round_trip_date = Carbon::createFromFormat('Y-m-d H:i', $request['end']['pickup']);
-        
-                $start = Carbon::createFromFormat('Y-m-d H:i', $start_date);
-                $end   = Carbon::createFromFormat('Y-m-d H:i', $end_date);
-        
-                if (
-                    $one_way_date->between($start, $end, true) ||
-                    (isset($round_trip_date) && $round_trip_date->between($start, $end, true))
-                ) {
+            // Protección de restricciones de horario configurables
+            $activeRestrictions = ScheduleRestriction::where('is_active', true)
+                ->where('end_at', '>=', $now)
+                ->get();
+
+            foreach ($activeRestrictions as $restriction) {
+                $blocked = function (Carbon $date) use ($restriction) {
+                    return $date->between($restriction->start_at, $restriction->end_at, true);
+                };
+
+                if ($blocked($oneWayDate) || ($roundTripDate && $blocked($roundTripDate))) {
                     return response()->json([
                         'error' => [
                             'code' => 'availability',
