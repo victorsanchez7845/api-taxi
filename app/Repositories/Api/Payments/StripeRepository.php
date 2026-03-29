@@ -133,4 +133,32 @@ class StripeRepository{
         endif;
     }
 
+    public function createIntent($amount, $currency, $reservationId) {
+        $key = config('services.stripe.key');
+
+        $stripe = new \Stripe\StripeClient( $key );
+
+        return $stripe->paymentIntents->create([
+            'amount' => $amount * 100,
+            'currency' => $currency,
+            'automatic_payment_methods' => [
+                'enabled' => true,
+            ],
+            'metadata' => [
+                'reservation_id' => $reservationId,
+            ]
+        ]);
+    }
+
+    public function getIntent($intentId) {
+        $key = config('services.stripe.key');
+
+        $stripe = new \Stripe\StripeClient( $key );
+
+        return $stripe->paymentIntents->retrieve(
+            $intentId,
+            []
+        );
+    }
+
 }

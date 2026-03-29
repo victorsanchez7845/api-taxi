@@ -49,7 +49,9 @@ return [
     ],
     'stripe' => [
         'key' => env('STRIPE_KEY'),
+        'public_key' => env('STRIPE_PUBLIC_KEY'),
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+        'production_mode' => (bool) env('STRIPE_PRODUCTION_MODE', false),
     ],
     'paypal' => [
         'merchant' => env('PAYPAL_MERCHANT_ID'),

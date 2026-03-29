@@ -35,90 +35,92 @@ use App\Http\Middleware\Auth;
 */
 
 Route::middleware([Auth::class])->group(function () {
-
     Route::prefix('v1')->group(function () {
 
         //SPAM PROCESS
-        Route::post('/spamChangeStatus', [SpamController::class,'spamChangeStatus'])->withoutMiddleware([Auth::class]);
-        Route::post('/spamCallCount', [SpamController::class,'spamCallCount'])->withoutMiddleware([Auth::class]);
+        Route::post('/spamChangeStatus', [SpamController::class, 'spamChangeStatus'])->withoutMiddleware([Auth::class]);
+        Route::post('/spamCallCount', [SpamController::class, 'spamCallCount'])->withoutMiddleware([Auth::class]);
 
-        Route::get('/bookings', [SpamController::class,'bookings'])->withoutMiddleware([Auth::class]);
+        Route::get('/bookings', [SpamController::class, 'bookings'])->withoutMiddleware([Auth::class]);
         // En routes/web.php
-        Route::get('/ip', function() {
+        Route::get('/ip', function () {
             return request()->ip();
         })->withoutMiddleware([Auth::class]);
 
         // VALIDATE QUOTATION CANCEL
-        Route::get('/validateQuotation', [validateQuotationController::class,'validateQuotation'])->withoutMiddleware([Auth::class]);
+        Route::get('/validateQuotation', [validateQuotationController::class, 'validateQuotation'])->withoutMiddleware([Auth::class]);
         // Route::get('/validateDuplicate', [validateQuotationController::class,'validateQuotation'])->withoutMiddleware([Auth::class]);
-        
+
         //Ruta de autenticación
-        Route::post('/oauth', [OauthController::class,'index'])->withoutMiddleware([Auth::class]);
+        Route::post('/oauth', [OauthController::class, 'index'])->withoutMiddleware([Auth::class]);
 
         //Rutas de cotización
-        Route::post('/autocomplete-affiliates', [AutocompleteController::class,'affiliates'])->withoutMiddleware([Auth::class]);
-        Route::post('/hotels/add', [HotelsController::class,'index'])->withoutMiddleware([Auth::class]);
-        Route::get('/hotels', [HotelsController::class,'getHotels'])->withoutMiddleware([Auth::class]);
-        Route::get('/rates', [RatesController::class,'getRates'])->withoutMiddleware([Auth::class]);
+        Route::post('/autocomplete-affiliates', [AutocompleteController::class, 'affiliates'])->withoutMiddleware([Auth::class]);
+        Route::post('/hotels/add', [HotelsController::class, 'index'])->withoutMiddleware([Auth::class]);
+        Route::get('/hotels', [HotelsController::class, 'getHotels'])->withoutMiddleware([Auth::class]);
+        Route::get('/rates', [RatesController::class, 'getRates'])->withoutMiddleware([Auth::class]);
 
-        Route::post('/autocomplete', [AutocompleteController::class,'index']);
-        Route::post('/quote', [SearchController::class,'index']);
-        Route::get('/phone', [PhoneController::class,'index']);
-        Route::post('/create', [CreationController::class,'index']);
+        Route::post('/autocomplete', [AutocompleteController::class, 'index']);
+        Route::post('/quote', [SearchController::class, 'index']);
+        Route::get('/phone', [PhoneController::class, 'index']);
+        Route::post('/create', [CreationController::class, 'index']);
 
         //Nota: En producción habilitar el pago, para habilitar el HTTPS y la busqueda por fecha...
-        Route::post('/flights/search', [FlightSearch::class,'index']);
-        Route::post('/flights/searchByDate', [FlightSearch::class,'searchDate']);
+        Route::post('/flights/search', [FlightSearch::class, 'index']);
+        Route::post('/flights/searchByDate', [FlightSearch::class, 'searchDate']);
 
         //Mailing
-        Route::get('/mailing/reservation/view', [MailingReservation::class,'view'])->withoutMiddleware([Auth::class]);
-        Route::get('/mailing/reservation/viewQR', [MailingReservation::class,'viewQR'])->withoutMiddleware([Auth::class]);
-        Route::get('/mailing/reservation/payment-request', [MailingReservation::class,'paymentRequest'])->withoutMiddleware([Auth::class]);
+        Route::get('/mailing/reservation/view', [MailingReservation::class, 'view'])->withoutMiddleware([Auth::class]);
+        Route::get('/mailing/reservation/viewQR', [MailingReservation::class, 'viewQR'])->withoutMiddleware([Auth::class]);
+        Route::get('/mailing/reservation/payment-request', [MailingReservation::class, 'paymentRequest'])->withoutMiddleware([Auth::class]);
 
         //Reservation
-        Route::post('/reservation/get', [SearchReservation::class,'index'])->withoutMiddleware([Auth::class]);
-        Route::get('/reservation/send', [SearchReservation::class,'send'])->withoutMiddleware([Auth::class]);
-        Route::get('/reservation/qr', [SearchReservation::class,'makeqr'])->withoutMiddleware([Auth::class]);
+        Route::post('/reservation/get', [SearchReservation::class, 'index'])->withoutMiddleware([Auth::class]);
+        Route::get('/reservation/send', [SearchReservation::class, 'send'])->withoutMiddleware([Auth::class]);
+        Route::get('/reservation/qr', [SearchReservation::class, 'makeqr'])->withoutMiddleware([Auth::class]);
 
         //types cancellations
-        Route::get('/types/cancellations/get', [SearchReservation::class,'getTypesCancellations'])->withoutMiddleware([Auth::class]);
+        Route::get('/types/cancellations/get', [SearchReservation::class, 'getTypesCancellations'])->withoutMiddleware([Auth::class]);
 
         //Payments
-        Route::get('/reservation/payment/handler', [HandlerController::class,'index'])->withoutMiddleware([Auth::class]);
-        Route::get('/reservation/payment/expressCheckoutElements', [HandlerController::class,'indexStripeElements'])->withoutMiddleware([Auth::class]);
-        Route::get('/reservation/payment/paypal/capture-order', [HandlerController::class,'payPalCaptureOrder'])->withoutMiddleware([Auth::class]);
+        Route::get('/reservation/payment/handler', [HandlerController::class, 'index'])->withoutMiddleware([Auth::class]);
+        Route::get('/reservation/payment/expressCheckoutElements', [HandlerController::class, 'indexStripeElements'])->withoutMiddleware([Auth::class]);
+        Route::get('/reservation/payment/paypal/capture-order', [HandlerController::class, 'payPalCaptureOrder'])->withoutMiddleware([Auth::class]);
 
         //Payments IPN
-        Route::post('/ipn/stripe', [VerifyController::class,'stripe'])->withoutMiddleware([Auth::class]);
-        Route::post('/ipn/paypal', [VerifyController::class,'paypal'])->withoutMiddleware([Auth::class]);
-        Route::post('/ipn/mifel', [VerifyController::class,'mifel'])->withoutMiddleware([Auth::class]);
-        Route::post('/ipn/mifel-validate', [HandlerController::class,'mifelValidate'])->withoutMiddleware([Auth::class]);
-        Route::post('/ipn/mit', [VerifyController::class,'mit'])->withoutMiddleware([Auth::class]);
+        Route::post('/ipn/stripe', [VerifyController::class, 'stripe'])->withoutMiddleware([Auth::class]);
+        Route::post('/ipn/paypal', [VerifyController::class, 'paypal'])->withoutMiddleware([Auth::class]);
+        Route::post('/ipn/mifel', [VerifyController::class, 'mifel'])->withoutMiddleware([Auth::class]);
+        Route::post('/ipn/mifel-validate', [HandlerController::class, 'mifelValidate'])->withoutMiddleware([Auth::class]);
+        Route::post('/ipn/mit', [VerifyController::class, 'mit'])->withoutMiddleware([Auth::class]);
 
         //Contact form
-        Route::post('/contact', [ContactController::class,'index'])->withoutMiddleware([Auth::class]);
+        Route::post('/contact', [ContactController::class, 'index'])->withoutMiddleware([Auth::class]);
 
-        Route::get('/terms-and-conditions', [TermsController::class,'terms'])->withoutMiddleware([Auth::class]);
-        Route::get('/privacy-policy', [TermsController::class,'privacy'])->withoutMiddleware([Auth::class]);
+        Route::get('/terms-and-conditions', [TermsController::class, 'terms'])->withoutMiddleware([Auth::class]);
+        Route::get('/privacy-policy', [TermsController::class, 'privacy'])->withoutMiddleware([Auth::class]);
 
-        Route::get('/promotions', [PromotionsController::class,'index'])->withoutMiddleware([Auth::class]);
-        Route::get('/promotions-download', [PromotionsController::class,'download'])->withoutMiddleware([Auth::class]);
+        Route::get('/promotions', [PromotionsController::class, 'index'])->withoutMiddleware([Auth::class]);
+        Route::get('/promotions-download', [PromotionsController::class, 'download'])->withoutMiddleware([Auth::class]);
 
         //Integration Master Tours
-        Route::get('/integrations/master-tours/list', [MasterToursController::class,'listing'])->withoutMiddleware([Auth::class]);
+        Route::get('/integrations/master-tours/list', [MasterToursController::class, 'listing'])->withoutMiddleware([Auth::class]);
 
         //Airlines
-        Route::get('/airlines', [AirlinesController::class,'index'])->withoutMiddleware([Auth::class]);
+        Route::get('/airlines', [AirlinesController::class, 'index'])->withoutMiddleware([Auth::class]);
 
         // OpenPay
         Route::get('/payments/openpay/keys', [HandlerController::class, 'openpayKeys'])->withoutMiddleware([Auth::class]);
         Route::post('/payments/openpay/charge', [HandlerController::class, 'openpayCreatePayment'])->withoutMiddleware([Auth::class]);
         Route::get('/payments/openpay/transaction', [HandlerController::class, 'getOpenPayTransaction'])->withoutMiddleware([Auth::class]);
         Route::post('/ipn/openpay', [VerifyController::class, 'openpay'])->withoutMiddleware([Auth::class]);
-        
+
         // Payment Links
         Route::get('/payments/payment-link/{link_code}', [HandlerController::class, 'getLinkCode'])->withoutMiddleware([Auth::class]);
-        
+
+        // Stripe 3ds
+        Route::get('/payments/stripe/keys', [HandlerController::class, 'stripeKeys'])->withoutMiddleware([Auth::class]);
+        Route::post('/payments/stripe/payment-intent', [HandlerController::class, 'stripeCreatePaymentIntent'])->withoutMiddleware([Auth::class]);
+        Route::post('/payments/stripe/confirm-payment-intent', [HandlerController::class, 'stripeGetPaymentIntentData'])->withoutMiddleware([Auth::class]);
     });
-    
 });

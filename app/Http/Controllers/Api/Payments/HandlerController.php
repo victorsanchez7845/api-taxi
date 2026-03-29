@@ -656,4 +656,43 @@ class HandlerController extends Controller
         $payment_link = PaymentLink::where('link_code', $link_code)->first();
         return $payment_link;
     }
+
+    public function stripeKeys()
+    {
+        $keys = $this->getStripeKeys();
+        return response()->json([
+            'publicKey' => $keys['publicKey'],
+            'productionMode' => (bool) config('services.stripe.production_mode'),
+        ], 200);
+    }
+
+    private function getStripeKeys()
+    {
+        return [
+            'publicKey' => config('services.stripe.public_key'),
+            'privateKey' => config('services.stripe.key'),
+        ];
+    }
+
+    public function stripeCreatePaymentIntent(Request $request, StripeRepository $stripeRepository) {
+        $data = $request->all();
+        $paymentIntent = $stripeRepository->createIntent($data['amount'], $data['currency'], $data['reservationId']);
+
+        return response()->json([
+            'paymentIntent' => $paymentIntent->id,
+            'clientSecret' => $paymentIntent->client_secret,
+        ], 200);
+
+    }
+
+    public function stripeGetPaymentIntentData(Request $request, StripeRepository $stripeRepository) {
+        $data = $request->all();
+        $paymentIntent = $stripeRepository->getIntent($data['intentId']);
+        return response()->json([
+            'status' => $paymentIntent->status,
+            'amount' => $paymentIntent->amount,
+            'currency' => $paymentIntent->currency,
+            'created' => $paymentIntent->created,
+        ], 200);
+    }
 }
