@@ -303,8 +303,8 @@ class PaypalRepository{
             return $response;
         endif;
 
-        $total = $this->getExchange($rez[0]->currency, $rez[0]->currency, $total);
-        $currency = $rez[0]->currency;
+        $total = $this->getExchange($rez[0]->currency, 'MXN', $total);
+        $currency = 'MXN';
         if($request->link_code) {
             $payment_link = PaymentLink::where('link_code', $request->link_code)->first();
 
