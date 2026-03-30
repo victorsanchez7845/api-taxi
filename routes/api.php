@@ -115,6 +115,11 @@ Route::middleware([Auth::class])->group(function () {
         Route::get('/payments/openpay/transaction', [HandlerController::class, 'getOpenPayTransaction'])->withoutMiddleware([Auth::class]);
         Route::post('/ipn/openpay', [VerifyController::class, 'openpay'])->withoutMiddleware([Auth::class]);
 
+        // Paypal
+        Route::get('/payments/paypal/keys', [HandlerController::class, 'getPaypalKeys'])->withoutMiddleware([Auth::class]);
+        Route::post('/payments/paypal/create-order', [HandlerController::class, 'createPaypalOrder'])->withoutMiddleware([Auth::class]);
+        Route::post('/payments/paypal/capture-order', [HandlerController::class, 'executePaypalOrder'])->withoutMiddleware([Auth::class]);
+        
         // Payment Links
         Route::get('/payments/payment-link/{link_code}', [HandlerController::class, 'getLinkCode'])->withoutMiddleware([Auth::class]);
 
