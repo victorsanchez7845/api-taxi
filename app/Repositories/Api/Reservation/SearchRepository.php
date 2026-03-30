@@ -9,12 +9,13 @@ use App\Models\ReservationsServices;
 use App\Models\Sales;
 use App\Models\ReservationsFollowUp;
 use App\Models\TypesCancellation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SearchRepository{
     private $request = [];
 
-    public function setData($request = []){
+    public function setData(Request $request){
         $this->request = $request->all();
     }
 
