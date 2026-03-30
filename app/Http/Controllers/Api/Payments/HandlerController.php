@@ -714,11 +714,11 @@ class HandlerController extends Controller
             'created' => $paymentIntent->created,
         ], 200);
     }
-    
+
     public function createPaypalOrder(Request $request,  PaypalRepository $handlerPaypal) {
         return $handlerPaypal->ordersV2($request, true);
     }
-
+    
     public function executePaypalOrder(Request $request, PaypalRepository $handlerPaypal) {
         return $handlerPaypal->ordersCapture($request);
     }
