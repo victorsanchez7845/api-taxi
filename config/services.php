@@ -49,10 +49,15 @@ return [
     ],
     'stripe' => [
         'key' => env('STRIPE_KEY'),
+        'public_key' => env('STRIPE_PUBLIC_KEY'),
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+        'production_mode' => (bool) env('STRIPE_PRODUCTION_MODE', false),
     ],
     'paypal' => [
         'merchant' => env('PAYPAL_MERCHANT_ID'),
+        'clientId' => env('PAYPAL_CLIENT_ID'),
+        'secret' => env('PAYPAL_SECRET'),
+        'production_mode' => (bool) env('PAYPAL_PRODUCTION_MODE', false),
     ],
     'santander' => [
         'user' => env('SANTANDER_USER', ''),
