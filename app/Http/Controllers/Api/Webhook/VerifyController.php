@@ -40,7 +40,7 @@ class VerifyController extends Controller
                     exit();
                 endif;
 
-                $exchange = $paymentRepository->getExchange($check->currency, "MXN");
+                $exchange = $paymentRepository->getExchange("MXN", $check->currency);
                 $data = [
                     'id' => $paymentIntent->metadata->reservation_id,
                     'total' => ($paymentIntent->amount / 100),
