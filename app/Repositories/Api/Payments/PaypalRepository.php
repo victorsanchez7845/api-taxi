@@ -16,7 +16,7 @@ class PaypalRepository{
         $this->PayPal = [
             "clientId" => env('PAYPAL_CLIENT_ID', ''),
             "clientSecret" => env('PAYPAL_SECRET', ''),
-            "URL" => env('PAYMENT_PAYPAL_URL', 'https://api-m.sandbox.paypal.com'),
+            "URL" => env('PAYMENT_PAYPAL_URL', 'https://api-m.paypal.com'),
         ];
     }
 
