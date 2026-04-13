@@ -19,6 +19,7 @@ use Openpay\Data\OpenpayApiRequestError;
 use App\Models\OpenpayTransaction;
 use App\Models\PaymentLink;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class HandlerController extends Controller
 {
@@ -267,6 +268,7 @@ class HandlerController extends Controller
     public function openpayCreatePayment(Request $request)
     {
         $data = $request->all();
+        $uuid = Str::uuid();
 
         try {
             $customer = [
@@ -282,7 +284,7 @@ class HandlerController extends Controller
                 'currency' => $data["charge"]["currency"],
                 'description' => "Pago de servicio de Transporte",
                 'customer' => $customer,
-                'order_id' => $data["metadata"]["uuid"],
+                'order_id' => $uuid,
                 'device_session_id' => $data["charge"]["device_session_id"],
                 'capture' => true,
                 'redirect_url' => $data["metadata"]["redirect_url"],
@@ -349,6 +351,7 @@ class HandlerController extends Controller
             // Here asocciated this transaction Id with the UUID
             OpenpayTransaction::create([
                 'openpay_transaction_id' => $charge->id,
+                'referal_uuid' => $uuid,
                 'reservation_uuid' => $data["metadata"]["uuid"],
                 'status' => $charge->status
             ]);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Webhook;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\OpenpayTransaction;
 use App\Models\OpenpayWeebhookAvailable;
 use App\Models\Payments;
 use App\Repositories\Api\Payments\PaypalRepository;
@@ -489,10 +490,26 @@ class VerifyController extends Controller
         }
 
         // Basically the same logic as stripe function just adjusting data 
+        // This remains since we cannot unsure if one payment has the new order_id as referal_uuid, can be the reservation_uuid.
         $check = $paymentRepository->getReservationByUUID($data["transaction"]["order_id"]);
+
         if ($check == false):
-            http_response_code(200);
-            return;
+            // If it is false, we check agains referal_uuid
+           $openpayRecord = OpenpayTransaction::where(['referal_uuid' => $data["transaction"]["order_id"]])->first();
+            if(!isset($openpayRecord)) {
+                // No record found for this order_id on the referal nor reservation_uuid
+                // return 200 for avoid re tries.
+                http_response_code(200);
+                return;
+            }
+            // getting the data from the reservation
+            $check = $paymentRepository->getReservationByUUID($openpayRecord->reservation_uuid);
+            if($check == false):
+                // this is on the case that the reservation_uuid does not exits, this should never happen.
+                // just protection
+                http_response_code(200);
+                return;
+            endif;
         endif;
 
         $exchange = $paymentRepository->getExchange($data["transaction"]["currency"], $check->currency);
