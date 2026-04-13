@@ -11,6 +11,7 @@ class OpenpayTransaction extends Model
     protected $table = 'openpay_transactions';
     protected $fillable = [
       'openpay_transaction_id',
+      'referal_uuid',
       'reservation_uuid',
       'status'
     ];
