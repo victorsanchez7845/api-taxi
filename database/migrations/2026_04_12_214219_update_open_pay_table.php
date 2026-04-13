@@ -14,7 +14,7 @@ return new class extends Migration
         //
         Schema::table('openpay_transactions', function (Blueprint $table) {
             // Add a string column that can be null
-            $table->string('referal_uuid')->nullable()->after('reservation_uuid');
+            $table->string('referal_uuid')->nullable()->after('reservation_uuid')->index('referal_uuid_index');
         });
     }
 
