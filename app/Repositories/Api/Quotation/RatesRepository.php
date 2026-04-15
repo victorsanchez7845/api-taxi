@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Repositories\Api\Quotation;
+
+use App\Models\PercentageTariff;
 use Illuminate\Support\Facades\DB;
-use Location\Coordinate;
-use Location\Polygon;
 use App\Traits\TokenTrait;
+use Illuminate\Http\Request;
 
 class RatesRepository{
     use TokenTrait;
@@ -13,7 +14,7 @@ class RatesRepository{
     private $request = []; //Datos que vienen del TPV
     private $exchange = [];
 
-    public function check($availability, $request = []){
+    public function check($availability, Request $request){
         // dd($availability, $request->all());
         $this->data = $availability;
         $this->request = $request->all();
@@ -206,6 +207,11 @@ class RatesRepository{
             if($value->price_type == "shared"):
                 $final_price = $final_price * $this->request['passengers'];
             endif;
+
+            $percentage = PercentageTariff::where('is_active', true)->orderBy('created_at', 'DESC')->first();
+            if(isset($percentage)) {
+                $final_price = $final_price + ($final_price * ($percentage->percentage_value/100));
+            } 
             
             $token_data = [
                 "request" => $this->request,
