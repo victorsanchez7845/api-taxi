@@ -99,6 +99,11 @@ class RatesRepository{
                 $final_price = $final_price * $this->request['passengers'];
             endif;
 
+            $percentage = PercentageTariff::where('is_active', true)->orderBy('created_at', 'DESC')->first();
+            if(isset($percentage)) {
+                $final_price = $final_price + ($final_price * ($percentage->percentage_value/100));
+            } 
+
             $token_data = [
                 "request" => $this->request,
                 "item" => [
