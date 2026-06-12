@@ -31,18 +31,18 @@
     <p>Ofrecemos un servidor protegido y seguro. Toda la información sensible es transmitida a través de tecnología <strong>Secure Socket Layer (SSL)</strong>. Al momento de realizar una transacción, sus datos privados no son almacenados en nuestros servidores para garantizar su tranquilidad.</p>
 
     <h2>¿Utilizamos cookies?</h2>
-    <p>Sí. Las cookies son archivos pequeños que el sitio transfiere a su dispositivo para permitirnos reconocer su navegador y recordar cierta información (como su idioma o preferencias de búsqueda). Esto beneficia al usuario al agilizar el llenado de campos en visitas futuras.</p>
+    <p>Sí. Las cookies son archivos pequeños que el sitio transfiere a su dispositivo para permitirnos reconocer su navegador y recordar cierta información, como su idioma o preferencias de búsqueda. Esto beneficia al usuario al agilizar el llenado de campos en visitas futuras.</p>
 
     <h2>¿Cómo usamos las cookies de terceros?</h2>
-    <p>Utilizamos <strong>Google Analytics</strong> para analizar cómo los usuarios interactúan con el sitio. Google utiliza cookies para recopilar información (incluida su IP) que se almacena en sus servidores. También utilizamos cookies de publicidad de Google para mostrar anuncios basados en sus visitas anteriores. Usted puede deshabilitar estas opciones en la configuración de su navegador o en la política de anuncios de Google.</p>
+    <p>Utilizamos <strong>Google Analytics</strong> para analizar cómo los usuarios interactúan con el sitio. Google utiliza cookies para recopilar información, incluida su IP, que se almacena en sus servidores. También utilizamos cookies de publicidad de Google para mostrar anuncios basados en sus visitas anteriores. Usted puede deshabilitar estas opciones en la configuración de su navegador o en la política de anuncios de Google.</p>
 
     <h2>¿Transferimos información a terceros?</h2>
-    <p><strong>No.</strong> Caribbean Transfers no vende, intercambia ni transfiere su información personal a nadie. Esto no incluye a terceros de confianza que nos ayudan a operar el sitio web o a realizar el servicio de transporte, siempre y cuando dichas partes acuerden mantener la confidencialidad.</p>
+    <p><strong>No.</strong> Taxi Dominicana no vende, intercambia ni transfiere su información personal a terceros. Esto no incluye a terceros de confianza que nos ayudan a operar el sitio web o a realizar el servicio de transporte, siempre y cuando dichas partes acuerden mantener la confidencialidad.</p>
 
     <h2>¿Cómo ejercer sus derechos ARCO o contactarnos?</h2>
     <p>Usted tiene derecho a conocer, corregir o cancelar el uso de sus datos personales. Para cualquier solicitud relacionada con su privacidad, puede escribirnos a nuestro canal oficial:</p>
     <ul>
-        <li><strong>Correo electrónico: contacto@caribbean-transfers.com</strong></li>
+        <li><strong>Correo electrónico: bookings@taxidominicana.com</strong></li>
     </ul>
 
     <h2>¿Cuánto tiempo retenemos su información?</h2>
@@ -58,7 +58,7 @@
         <li>Full name.</li>
         <li>Email address.</li>
         <li>Physical address.</li>
-        <li>Flight information (airline and flight number).</li>
+        <li>Flight information, including airline and flight number.</li>
         <li>Phone number.</li>
     </ul>
 
@@ -69,7 +69,7 @@
     <p>To ensure maximum security, all transactions are handled by industry-leading third-party providers:</p>
 
     <ul>
-        <li><strong>Openpay: </strong> All transactions are validated using the <strong>3D Secure</strong> protocol, which requires additional verification from your issuing bank to prevent unauthorized charges.</li>
+        <li><strong>Openpay:</strong> All transactions are validated using the <strong>3D Secure</strong> protocol, which requires additional verification from your issuing bank to prevent unauthorized charges.</li>
         <li><strong>PayPal:</strong> Information is processed directly within their secure system.</li>
         <li><strong>Important:</strong> We <strong>do not store any credit card billing data</strong> or CVV codes on our servers.</li>
     </ul>
@@ -89,11 +89,24 @@
     <p>We offer a protected and secure server environment. All sensitive information is transmitted via <strong>Secure Socket Layer (SSL)</strong> technology. At the time of a transaction, your private billing data is not stored on our servers to guarantee your peace of mind.</p>
 
     <h2>Do we use cookies?</h2>
-    <p>Yes. Cookies are small files that a site transfers to your device to enable us to recognize your browser and remember certain information (such as language or search preferences). This benefits the user by automatically filling in fields during future visits.</p>
+    <p>Yes. Cookies are small files that a site transfers to your device to enable us to recognize your browser and remember certain information, such as language or search preferences. This benefits the user by automatically filling in fields during future visits.</p>
 
     <h2>How do we use third-party cookies?</h2>
-    <p>We use <strong>Google Analytics</strong> to analyze how users interact with our site. Google uses cookies to collect information (including your IP address) stored on its servers. We also use Google advertising cookies to show ads based on your previous visits. You can disable these options in your browser settings or through Google’s ad privacy policy.</p>
+    <p>We use <strong>Google Analytics</strong> to analyze how users interact with our site. Google uses cookies to collect information, including your IP address, stored on its servers. We also use Google advertising cookies to show ads based on your previous visits. You can disable these options in your browser settings or through Google’s ad privacy policy.</p>
 
     <h2>Do we transfer information to third parties?</h2>
-    <p><strong>No.</strong> Caribbean Transfers does not sell, trade, or transfer your personal information to outside parties. This does not include trusted third parties who assist us in operating our website or </p>
+    <p><strong>No.</strong> Taxi Dominicana does not sell, trade, or transfer your personal information to outside parties. This does not include trusted third parties who assist us in operating our website or providing the transportation service, as long as those parties agree to keep this information confidential.</p>
+
+    <h2>How can you exercise your privacy rights or contact us?</h2>
+    <p>You have the right to access, correct, or request the deletion of your personal data. For any privacy-related request, you may contact us through our official channel:</p>
+
+    <ul>
+        <li><strong>Email: bookings@taxidominicana.com</strong></li>
+    </ul>
+
+    <h2>How long do we retain your information?</h2>
+    <p>We will only retain your personal information for as long as necessary to fulfill the purposes for which it was collected, including legal, accounting, or service reporting requirements.</p>
+
+    <h2>Will there be changes to this policy?</h2>
+    <p>If we decide to make changes to our privacy policy, we will update the information directly in this section.</p>
 @endif
