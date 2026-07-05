@@ -167,6 +167,8 @@ class SearchController extends Controller
     
         if(config('app.env') == "production"):
             $email_response = $this->sendMailjet($email_data);
+
+            dd($email_response);
         else:
             $email_response['Messages'][0]['Status'] = 'success';
         endif;
