@@ -165,11 +165,29 @@ class SearchController extends Controller
             )
         );
     
-        if(config('app.env') == "production"):
-            $email_response = $this->sendMailjet($email_data);
-        else:
-            $email_response['Messages'][0]['Status'] = 'success';
-        endif;
+        /*
+|--------------------------------------------------------------------------
+| ENVÍO DE CORREO / DEBUG TEMPORAL
+|--------------------------------------------------------------------------
+| Esto nos permite ver si Laravel está leyendo correctamente:
+| - APP_ENV
+| - MAILJET_KEY
+| - MAILJET_SECRET
+| - Respuesta real de Mailjet
+*/
+
+$email_response = $this->sendMailjet($email_data);
+
+return response()->json([
+    'debug' => [
+        'app_env' => config('app.env'),
+        'mailjet_key_loaded' => !empty(config('services.mailjet.key')),
+        'mailjet_secret_loaded' => !empty(config('services.mailjet.secret')),
+        'from_email' => $data['site']['email'],
+        'to_email' => $request->email,
+    ],
+    'mailjet_response' => $email_response
+], 200);
         
         if(isset($email_response['Messages'][0]['Status']) && $email_response['Messages'][0]['Status'] == "success"):
             $follow_up_db = new ReservationsFollowUp;
