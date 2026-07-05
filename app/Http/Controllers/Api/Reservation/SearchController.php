@@ -175,8 +175,16 @@ class SearchController extends Controller
 | - MAILJET_SECRET
 | - Respuesta real de Mailjet
 */
+return response()->json([
+    'step' => 'before_mailjet',
+    'app_env' => config('app.env'),
+    'mailjet_key_loaded' => !empty(config('services.mailjet.key')),
+    'mailjet_secret_loaded' => !empty(config('services.mailjet.secret')),
+    'from_email' => $data['site']['email'],
+    'to_email' => $request->email,
+], 200);
 
-$email_response = $this->sendMailjet($email_data);
+/*        $email_response = $this->sendMailjet($email_data);  */
 
 return response()->json([
     'debug' => [
