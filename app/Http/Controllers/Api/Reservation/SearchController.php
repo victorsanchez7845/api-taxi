@@ -165,11 +165,7 @@ class SearchController extends Controller
             )
         );
     
-        if(config('app.env') == "production"):
-            $email_response = $this->sendMailjet($email_data);
-        else:
-            $email_response['Messages'][0]['Status'] = 'success';
-        endif;
+        $email_response = $this->sendMailjet($email_data);
         
         if(isset($email_response['Messages'][0]['Status']) && $email_response['Messages'][0]['Status'] == "success"):
             $follow_up_db = new ReservationsFollowUp;
