@@ -238,7 +238,7 @@
                                                 </td>
                                                 <td rowspan="7" style="text-align:right;">
                                                     @php
-                                                        $QR = urlencode('https://api.caribbean-transfers.com/api/v1/mailing/reservation/view?code='.$key.'&email='.trim(strtolower($data['client']['email'])).'&language='.$lang);
+                                                        $QR = urlencode('https://api.taxidominicana.com/api/v1/mailing/reservation/view?code='.$key.'&email='.trim(strtolower($data['client']['email'])).'&language='.$lang);
                                                     @endphp
                                                     <img src="{{config('app.url')}}/api/v1/reservation/qr?code={{$QR}}" width="250">
                                                 </td>
@@ -366,7 +366,7 @@
                 <tr>
                     <td>
                         <a href="https://www.tripadvisor.com/Attraction_Review-g150807-d25085358-Reviews-Caribbean_Transfers-Cancun_Yucatan_Peninsula.html" target="_blank">
-                            <img src="https://ik.imagekit.io/zqiqdytbq/transportation-api/mailing/banner/banner.png" style="width:600px;">
+                            <img src="https://ik.imagekit.io/x4uujhiqht/taxi-dominicana.png" style="width:600px;">
                         </a>
                     </td>
                 </tr>
@@ -384,57 +384,129 @@
                 <tr>
                     <td class="white_content information" style="text-align:left; padding-top: 0px;">
                         @if($lang == "en")                            
-                            <h4 style="color:red; text-align:center;">ITS VERY IMPORTANT TO YOU TO KNOW</h4>
-                            <h3>For ARRIVALS</h3>
-                            <p><strong>Upon arrival to the Airport please follow these recommendations to ensure an easy and fast access to your vehicle:</strong></p>
-                            <p>1.- When you arrive to the Airport, first you are going to go through immigrations, following you will be guided to the baggage claim area.</p>
-                            <p>2.- Once you have picked up your luggage you will be directed to Customs.</p>
-                            <p>3.- After you have cleared customs, please proceed to walk <strong>OUTSIDE</strong> your arrival terminal - <strong>it is very important to go all the way out since there will be large groups of "tourist advisors" which will try to stop you and claim to give you information about the destination however what they really do is sell time share, offering tours for free or discounted prices. For your own convenience please do not stop anywhere between customs and the airport exit.</strong></p>
-                            <p>4.- One of our representatives will be waiting for you and will gladly greet you so you can start enjoying your vacations. He will have a board with the {{ $provider_name }} LOGO. This person will call your pick up transportation.</p>
-                            <p>5.- WE ARE ALWAYS AT THE AIRPORT, in case you can`t see us, please dial our phone numbers.</p>
-                            <p>6.- Tips for driver are <strong>NOT INCLUDED</strong>.</p>
-                            <p>IMPORTANT: <strong>DO NOT</strong> be fooled by others at the airport. Others may say they are with us or tell you they do not know us to steal your business. Our greeters are there all day, so you can ask security for help finding us, but beware of the pirates as they may tell you we are not there. We are <strong>ALWAYS THERE</strong>. </p>
-                            <p><strong>REMEMBER THAT WE WILL BE MONITORING YOUR FLIGHT IF IT IS DELAYED OR ARRIVED EARLY</strong>, it is not necessary to contact us, as we will be aware of this information. Only if your flight is canceled or changed, be sure to obtain the new flight information so that you can reschedule your transportation. </p>
-
-                            <h3>For DEPARTURES</h3>
-                            <p>The International Airport requests that all passengers departing on international flights must be at the airport at least 2 hours before the flight departure time. Your pick-up time was scheduled in accordance with this request and taking into account information such as flight departure time, estimated travel time between your hotel and airport, day of the week and assumed traffic flow.</p>
-
-                            <h4>Policies</h4>                            
-                            <p class="gray_color">In case the service has been paid by credit card, you must present the card and your identification when boarding.</p>
-                            <p class="gray_color">The service may only be canceled 24 hours before your arrival or departure. If you purchased the Plus fare, you may receive a partial refund; otherwise, you are not eligible for a refund.</p>
-
-
-                            <h5>Service Hours</h5> 
-                            <p class="gray_color">In case of change of time of service can be made if you contact us 12 hours before the agreed time because you have to reschedule your service. Contact us from 7AM to 11PM from Monday to Sunday at <a class="pink" href="tel:+529983870157">+52 (998) 387 0157</a> or email <a class="pink" href="mailto:bookings@caribbean-transfers.com">bookings@caribbean-transfers.com</a></p>
-                        @else
-                            <h4 style="color:red; text-align:center;">ES MUY IMPORTANTE QUE SEPAS</h4>
-                            <h3>Para LLEGADAS</h3>
-                            <p><strong>A su llegada al aeropuerto, siga estas recomendaciones para garantizar un acceso fácil y rápido a su vehículo:</strong></p>
-                            <p>1.- Cuando llegue al aeropuerto, primero pasará por el control de inmigración y, a continuación, será conducido a la zona de recogida de equipajes.</p>
-                            <p>2.- Una vez que haya recogido su equipaje, se le dirigirá a la aduana.</p>
-                            <p>3.- Después de pasar la aduana, diríjase al <strong>EXTERIOR</strong> de la terminal de llegada - <strong>  es muy importante llegar hasta la salida, ya que habrá grandes grupos de "asesores turísticos" que intentarán pararle y afirmarán que le dan información sobre el destino, aunque lo que realmente hacen es vender tiempo compartido, ofreciendo visitas gratuitas o a precios rebajados. Por su propia comodidad, no se detenga entre la aduana y la salida del aeropuerto.</strong></p>
-                            <p>4.- Uno de nuestros representantes le estará esperando y gustosamente le dará la bienvenida para que pueda empezar a disfrutar de sus vacaciones. Él tendrá un tablero con el LOGO de {{ $provider_name }}. Esta persona llamará a su transporte de recogida.</p>
-                            <p>5.- SIEMPRE ESTAMOS EN EL AEROPUERTO, en caso de que no pueda vernos, marque nuestros números de teléfono.</p>
-                            <p>6.- La propina para el conductor <strong>NO ESTÁ INCLUIDA</strong>.</p>
-                            <p>IMPORTANTE: <strong>NO</strong> se deje engañar por otras personas en el aeropuerto. Otros pueden decir que están con nosotros o decirle que no nos conocen para robarle su negocio. Nuestros recepcionistas están allí todo el día, por lo que puede pedir ayuda a seguridad para encontrarnos, pero tenga cuidado con los piratas, ya que pueden decirle que no estamos allí. Estamos <strong>SIEMPRE</strong>.</p>
-                            <p><strong>RECUERDE QUE ESTAREMOS PENDIENTES DE SU VUELO SI SE RETRASA O LLEGA ANTES DE LO PREVISTO</strong>, no es necesario que se ponga en contacto con nosotros, ya que tendremos conocimiento de esta información. Sólo si su vuelo se cancela o cambia, asegúrese de obtener la información del nuevo vuelo para poder reprogramar su transporte.</p>
-
-                            <h3>Para SALIDAS</h3>
-                            <p>El Aeropuerto Internacional solicita que todos los pasajeros que salgan en vuelos internacionales estén en el aeropuerto al menos 2 horas antes de la hora de salida del vuelo. Su hora de recogida se programó de acuerdo con esta petición y teniendo en cuenta información como la hora de salida del vuelo, la duración estimada del trayecto entre su hotel y el aeropuerto, el día de la semana y el flujo de tráfico previsto.</p>
-
-                            <h4>Políticas</h4>
-                            <p class="gray_color">En caso de que el servicio haya sido pagado con tarjeta, deberá presentar la tarjeta y su identificación al abordar.</p>                            
-                            <p class="gray_color">Unicamente se podrá cancelar el servicio 24 hrs antes de su llegada o salida, si usted adquirió la tarifa plus puede obtener un reembolso parcial, de lo contrario no es candidato a reembolso.</p>
-
-                            <h5>Horario de Servicio</h5> 
-                            <p class="gray_color">En caso de cambio de hora de servicio se podra efectuar si se comunica 12 hrs antes de la hora acordada ya que se tiene que reprogramar su servicio. Contáctanos de 7AM a 11PM de Lunes a Domingo al numero <a class="pink" href="tel:+529983870157">+52 (998) 387 0157</a> o al correo <a class="pink" href="mailto:bookings@caribbean-transfers.com">bookings@caribbean-transfers.com</a></p>
-                        @endif
+                        <h4 style="color:red; text-align:center;">IT IS VERY IMPORTANT FOR YOU TO KNOW</h4>
+                    
+                        <h3>For ARRIVALS</h3>
+                    
+                        <p><strong>Upon arrival at Punta Cana International Airport (PUJ), please follow these instructions to ensure an easy and fast connection with your transportation service:</strong></p>
+                    
+                        <p>1.- Please download WhatsApp before your trip and keep us informed from the moment your flight lands at Punta Cana Airport. This will help our support team and airport staff assist you faster.</p>
+                    
+                        <p>2.- As soon as you arrive and have internet connection, please send us a selfie or recent photo of yourself through WhatsApp so our airport staff can identify you more easily at the meeting point.</p>
+                    
+                        <p>3.- When you arrive at the airport, you will first go through Immigration. After that, you will be directed to the baggage claim area.</p>
+                    
+                        <p>4.- Once you have picked up your luggage, you will be directed to Customs.</p>
+                    
+                        <p>5.- After clearing Customs, please proceed to walk <strong>OUTSIDE</strong> your arrival terminal. <strong>It is very important to go all the way outside, as there may be people offering tourist information, tours, transportation, or vacation packages. These people are not part of our service. For your own convenience, please do not stop anywhere between customs and the airport exit.</strong></p>
+                    
+                        <p>6.- One of our representatives may be waiting for you at the designated meeting point. The representative will have a board with the {{ $provider_name }} LOGO and will assist you in locating your assigned transportation.</p>
+                    
+                        <p>7.- In some cases, depending on airport operations or staff availability at that moment, our support team may guide you directly by WhatsApp or phone so you can board your transportation correctly.</p>
+                    
+                        <p>8.- <strong>Meeting point by terminal:</strong></p>
+                    
+                        <p><strong>Terminal A:</strong> Our representative is normally located outside the terminal, in front of the <strong>Welcome Punta Cana</strong> area.</p>
+                    
+                        <p><strong>Terminal B:</strong> Due to remodeling and airport operations, the meeting point may vary depending on the day and time. It may be at <strong>Counter 8</strong> or outside the terminal exit. Our team will guide you to the correct meeting point based on your arrival time.</p>
+                    
+                        <p>9.- If you cannot find our representative or need assistance, please contact our customer support number immediately.</p>
+                    
+                        <p><strong>Customer Support / WhatsApp:</strong> <a class="pink" href="https://api.whatsapp.com/send?phone=529987322416&text=Hello!">+52 998 732 2416</a></p>
+                    
+                        <p>10.- Tips for driver are <strong>NOT INCLUDED</strong> and are completely optional.</p>
+                    
+                        <p>IMPORTANT: <strong>DO NOT</strong> be fooled by other people at the airport. Some may say they work with us, that they know your reservation, or that your transportation is not available. Our official representatives will identify themselves with the {{ $provider_name }} LOGO. For your own convenience, please only follow the instructions provided in your confirmation email and by our official support team.</p>
+                    
+                        <p><strong>REMEMBER THAT WE WILL BE MONITORING YOUR ARRIVAL FLIGHT IF IT IS DELAYED OR ARRIVES EARLY.</strong> It is not necessary to contact us if your arrival flight is delayed or arrives early, as our team will be aware of the flight status. Only if your flight is canceled, changed, or you are assigned a different flight number, please contact us as soon as possible with the updated flight information so we can reschedule your transportation.</p>
+                    
+                        <h3>For DEPARTURES</h3>
+                    
+                        <p>For departure services, please note that <strong>we do not monitor departure flights</strong>.</p>
+                    
+                        <p>Your pick-up time was scheduled based on the flight information provided at the time of booking, estimated travel time from your hotel to Punta Cana International Airport, day of the week, and possible traffic conditions.</p>
+                    
+                        <p>If you need to update your departure pick-up time, the request must be made at least <strong>24 hours in advance</strong>. Same-day schedule changes are subject to availability and may have an additional cost.</p>
+                    
+                        <p>Please be ready <strong>outside the hotel lobby or at the confirmed pick-up point</strong> at the scheduled time. Drivers are not always able to call passengers upon arrival, so it is very important that you are already waiting at the agreed location.</p>
+                    
+                        <p>The tolerance time is <strong>10 minutes</strong>. If you are not at the pick-up point within this time, the service will be considered a <strong>no-show</strong>.</p>
+                    
+                        <p>No-show services are <strong>non-refundable and cannot be rescheduled</strong>.</p>
+                    
+                        <h4>Policies</h4>                            
+                        <p class="gray_color">In case the service has been paid by credit card, you may be required to present the card used for payment and a valid identification when boarding.</p>
+                    
+                        <p class="gray_color">Cancellations must be requested at least 24 hours before your scheduled arrival or departure service. If your fare includes flexible or Plus conditions, you may be eligible for a partial refund according to the conditions of your reservation. Otherwise, the service may be non-refundable.</p>
+                    
+                        <h5>Service Hours</h5> 
+                        <p class="gray_color">If you need to change the time of your service, please contact us at least 24 hours before the scheduled pick-up time. Same-day changes are subject to availability and may have an additional cost. Contact us from 7AM to 11PM from Monday to Sunday at <a class="pink" href="tel:+529987322416">+52 998 732 2416</a> or email <a class="pink" href="mailto:booking@taxidominicana.com">booking@taxidominicana.com</a></p>
+                    @else
+                        <h4 style="color:red; text-align:center;">ES MUY IMPORTANTE QUE SEPAS</h4>
+                    
+                        <h3>Para LLEGADAS</h3>
+                    
+                        <p><strong>A su llegada al Aeropuerto Internacional de Punta Cana (PUJ), siga estas instrucciones para garantizar una conexión fácil y rápida con su servicio de transporte:</strong></p>
+                    
+                        <p>1.- Por favor descargue WhatsApp antes de su viaje y manténganos informados desde el momento en que su vuelo aterrice en el Aeropuerto de Punta Cana. Esto ayudará a nuestro equipo de soporte y al staff de aeropuerto a asistirle más rápido.</p>
+                    
+                        <p>2.- Tan pronto como llegue y tenga conexión a internet, por favor envíenos por WhatsApp una selfie o una foto reciente suya para que nuestro staff de aeropuerto pueda identificarle más fácilmente en el punto de encuentro.</p>
+                    
+                        <p>3.- Cuando llegue al aeropuerto, primero pasará por el control de inmigración. Después será dirigido al área de recogida de equipaje.</p>
+                    
+                        <p>4.- Una vez que haya recogido su equipaje, será dirigido a Aduana.</p>
+                    
+                        <p>5.- Después de pasar Aduana, diríjase al <strong>EXTERIOR</strong> de su terminal de llegada. <strong>Es muy importante salir completamente de la terminal, ya que puede haber personas ofreciendo información turística, tours, transporte o paquetes vacacionales. Estas personas no forman parte de nuestro servicio. Por su propia comodidad, no se detenga entre Aduana y la salida del aeropuerto.</strong></p>
+                    
+                        <p>6.- Uno de nuestros representantes puede estar esperándole en el punto de encuentro designado. El representante tendrá un letrero con el LOGO de {{ $provider_name }} y le ayudará a localizar su transporte asignado.</p>
+                    
+                        <p>7.- En algunos casos, dependiendo de la operación del aeropuerto o de la disponibilidad del staff en ese momento, nuestro equipo de soporte podrá guiarle directamente por WhatsApp o llamada para que pueda abordar correctamente su transporte.</p>
+                    
+                        <p>8.- <strong>Punto de encuentro por terminal:</strong></p>
+                    
+                        <p><strong>Terminal A:</strong> Nuestro representante normalmente se encuentra fuera de la terminal, frente al área de <strong>Welcome Punta Cana</strong>.</p>
+                    
+                        <p><strong>Terminal B:</strong> Debido a remodelaciones y operación del aeropuerto, el punto de encuentro puede variar dependiendo del día y la hora. Puede ser en el <strong>Counter 8</strong> o fuera de la salida de la terminal. Nuestro equipo le indicará el punto correcto de acuerdo con su horario de llegada.</p>
+                    
+                        <p>9.- Si no puede encontrar a nuestro representante o necesita asistencia, por favor contacte inmediatamente a nuestro número de soporte al cliente.</p>
+                    
+                        <p><strong>Soporte al cliente / WhatsApp:</strong> <a class="pink" href="https://api.whatsapp.com/send?phone=529987322416&text=%C2%A1Hola!">+52 998 732 2416</a></p>
+                    
+                        <p>10.- La propina para el conductor <strong>NO ESTÁ INCLUIDA</strong> y es completamente opcional.</p>
+                    
+                        <p>IMPORTANTE: <strong>NO</strong> se deje engañar por otras personas en el aeropuerto. Algunas personas pueden decir que trabajan con nosotros, que conocen su reservación o que su transporte no está disponible. Nuestros representantes oficiales se identificarán con el LOGO de {{ $provider_name }}. Por su propia comodidad, siga únicamente las instrucciones proporcionadas en su correo de confirmación y por nuestro equipo oficial de soporte.</p>
+                    
+                        <p><strong>RECUERDE QUE MONITOREAMOS SU VUELO DE LLEGADA SI SE RETRASA O LLEGA ANTES DE LO PREVISTO.</strong> No es necesario contactarnos si su vuelo de llegada se retrasa o llega antes, ya que nuestro equipo estará al tanto del estado del vuelo. Únicamente si su vuelo es cancelado, cambiado o se le asigna un número de vuelo diferente, por favor contáctenos lo antes posible con la información actualizada para poder reprogramar su transporte.</p>
+                    
+                        <h3>Para SALIDAS</h3>
+                    
+                        <p>Para servicios de salida, por favor tenga en cuenta que <strong>no monitoreamos vuelos de salida</strong>.</p>
+                    
+                        <p>Su hora de recogida fue programada con base en la información de vuelo proporcionada al momento de reservar, el tiempo estimado de traslado desde su hotel hacia el Aeropuerto Internacional de Punta Cana, el día de la semana y posibles condiciones de tráfico.</p>
+                    
+                        <p>Si necesita actualizar la hora de recogida de su salida, la solicitud debe realizarse con al menos <strong>24 horas de anticipación</strong>. Los cambios de horario el mismo día están sujetos a disponibilidad y pueden tener un costo adicional.</p>
+                    
+                        <p>Por favor esté listo <strong>fuera del lobby del hotel o en el punto de recogida confirmado</strong> a la hora programada. Los conductores no siempre tienen posibilidad de llamar a los pasajeros al llegar, por lo que es muy importante que ya se encuentre esperando en el lugar acordado.</p>
+                    
+                        <p>El tiempo de tolerancia es de <strong>10 minutos</strong>. Si no se encuentra en el punto de recogida dentro de este tiempo, el servicio será considerado como <strong>no-show</strong>.</p>
+                    
+                        <p>Los servicios marcados como no-show <strong>no son reembolsables y no pueden ser reagendados</strong>.</p>
+                    
+                        <h4>Políticas</h4>
+                    
+                        <p class="gray_color">En caso de que el servicio haya sido pagado con tarjeta, es posible que deba presentar la tarjeta utilizada para el pago y una identificación válida al abordar.</p>                            
+                    
+                        <p class="gray_color">Las cancelaciones deben solicitarse al menos 24 horas antes de su servicio programado de llegada o salida. Si su tarifa incluye condiciones flexibles o Plus, podría ser elegible para un reembolso parcial de acuerdo con las condiciones de su reservación. De lo contrario, el servicio puede no ser reembolsable.</p>
+                    
+                        <h5>Horario de Servicio</h5> 
+                        <p class="gray_color">Si necesita cambiar la hora de su servicio, por favor contáctenos al menos 24 horas antes de la hora programada de recogida. Los cambios el mismo día están sujetos a disponibilidad y pueden tener un costo adicional. Contáctenos de 7AM a 11PM de Lunes a Domingo al número <a class="pink" href="tel:+529987322416">+52 998 732 2416</a> o al correo <a class="pink" href="mailto:booking@taxidominicana.com">booking@taxidominicana.com</a></p>
+                    @endif
                     </td>
                 </tr>
                 <tr>
                     <td style="padding: 15px; text-align:center;">
                         <div>
-                            <a href="https://www.facebook.com/caribbeantransferscun" target="_blank"><img src="https://ik.imagekit.io/zqiqdytbq/transportation-api/mailing/social/facebook.png?updatedAt=1692978703979" style="margin-right: 15px;"></a>
+                            <a href="https://www.facebook.com/profile.php?id=61591239112562" target="_blank"><img src="https://ik.imagekit.io/zqiqdytbq/transportation-api/mailing/social/facebook.png?updatedAt=1692978703979" style="margin-right: 15px;"></a>
                             <!--<a href="#" target="_blank"><img src="https://ik.imagekit.io/zqiqdytbq/transportation-api/mailing/social/instagram.png?updatedAt=1692978703965"></a>-->
                         </div>
                         <p style="font-size: 11pt; color: #6A829E;">&copy; {{ $provider_name }} | {{ __('mailing/client.rights_reserved') }}</p>
