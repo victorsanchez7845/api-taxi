@@ -167,7 +167,7 @@
                                 <tbody>
                                     <tr>
                                         <td style="text-align:center;">
-                                            <img src="https://ik.imagekit.io/zqiqdytbq/transportation-api/mailing/top-vehicle.png?updatedAt=1693244044317">
+                                            <img src="">
                                         </td>
                                     </tr>
                                     <tr>
