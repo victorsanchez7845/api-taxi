@@ -344,13 +344,29 @@
 
                         <div>
                             <p style="margin: 15px 0px 5px 0px; font-size:14pt;"><strong>{{ __('mailing/client.indications') }}</strong></p>
-                            @if($lang == "en")
-                                <p style="margin-bottom: 8px;">In this email you will find a summary of your reservation information, it is important that you can validate that the information is correct, and in case of any change in the information of your flight, doubts or clarifications contact us so we can assist you in the best possible way.</p>
-                                <p>If you are at the airport or at your hotel and do not see us, call us at <a class="pink" href="tel:+529983870157">+52 (998) 387 0157</a> or send us a WhatsApp to <a class="pink" href="https://api.whatsapp.com/send?phone=5219982127069&text=Hello!">+52 (998) 212 7069</a>.</p>
-                            @else
-                                <p style="margin-bottom: 8px;">En este correo electrónico encontrarás un resumen de la información de tu reservación, es importante que puedas validar que la información es correcta, y en caso de algún cambio en la información de tu vuelo, dudas o aclaraciones contáctanos para poder atenderte de la mejor manera posible.</p>
-                                <p>Si estás en el Aeropuerto o en tu Hotel y no nos ves, llámanos al <a class="pink" href="tel:+529983870157">+52 (998) 387 0157</a> o envíanos un WhatsApp al <a class="pink" href="https://api.whatsapp.com/send?phone=5219982127069&text=%C2%A1Hola!">+52 (998) 212 7069</a>.</p>
-                            @endif                            
+                        @if($lang == "en")
+                            <p style="margin-bottom: 8px;">
+                                Thank you for choosing Taxi Dominicana. This email contains your transportation reservation details. Please review all the information carefully to ensure everything is correct. If your flight information changes or you need to modify your reservation, our team will be happy to assist you.
+                            </p>
+                        
+                            <p>
+                                If you need assistance before your trip or if you are unable to locate your driver upon arrival, please call us at
+                                <a class="pink" href="tel:+529987322416">+52 (998) 732 2416</a>
+                                or send us a WhatsApp at
+                                <a class="pink" href="https://wa.me/529987322416">+52 (998) 732 2416</a>.
+                            </p>
+                        @else
+                            <p style="margin-bottom: 8px;">
+                                Gracias por elegir Taxi Dominicana. En este correo encontrarás los detalles de tu reservación de traslado. Te recomendamos revisar cuidadosamente la información para asegurarte de que todo sea correcto. Si tu vuelo cambia, necesitas modificar tu reservación o tienes cualquier duda antes de tu viaje, nuestro equipo estará encantado de ayudarte.
+                            </p>
+                        
+                            <p>
+                                Si necesitas asistencia antes de tu viaje o no logras localizar a tu conductor al momento de tu llegada, comunícate con nosotros llamando al
+                                <a class="pink" href="tel:+529987322416">+52 (998) 732 2416</a>
+                                o envíanos un WhatsApp al
+                                <a class="pink" href="https://wa.me/529987322416">+52 (998) 732 2416</a>.
+                            </p>
+                        @endif                           
                         </div>
                     </td>                    
                 </tr>
@@ -365,7 +381,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <a href="https://www.tripadvisor.com/Attraction_Review-g150807-d25085358-Reviews-Caribbean_Transfers-Cancun_Yucatan_Peninsula.html" target="_blank">
+                        <a href="https://taxidominicana.com/booking" target="_blank">
                             <img src="https://ik.imagekit.io/x4uujhiqht/taxi-dominicana.png" style="width:600px;">
                         </a>
                     </td>
