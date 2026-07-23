@@ -5,91 +5,157 @@ namespace App\Repositories\Api\Payments;
 use App\Models\PaymentLink;
 use Illuminate\Support\Facades\DB;
 
-class StripeRepository{
+class StripeRepository
+{
     private $data = [];
 
-    public function check($request){
+    public function check($request)
+    {
         $response = [
-            "status" => false,            
+            "status" => false,
         ];
 
-        $this->data = $request->all();        
-   
-        $rez = DB::select("SELECT   rez.id, 
-                                    rez.currency, 
-                                    site.payment_domain,
-                                    ROUND( COALESCE(SUM( s.total_sales ), 0), 2) as total_sales,
-                                    ROUND( COALESCE(SUM( p.total_payments ), 0), 2) as total_payments
-                                FROM reservations AS rez
-                                    LEFT JOIN (
-                                        SELECT reservation_id,  ROUND( COALESCE(SUM(total), 0), 2) as total_sales
-                                        FROM sales
-                                        WHERE deleted_at IS NULL AND sales.sale_type_id <> 3
-                                        GROUP BY reservation_id
-                                    ) as s ON s.reservation_id = rez.id
-                                    LEFT JOIN (
-                                        SELECT reservation_id,
-                                        ROUND(SUM(CASE WHEN operation = 'multiplication' THEN total * exchange_rate
-                                                                    WHEN operation = 'division' THEN total / exchange_rate
-                                                            ELSE total END), 2) AS total_payments,
-                                        GROUP_CONCAT(DISTINCT payment_method ORDER BY payment_method ASC SEPARATOR ',') AS payment_type_name
-                                        FROM payments
-                                        GROUP BY reservation_id
-                                    ) as p ON p.reservation_id = rez.id
-                                INNER JOIN sites as site ON site.id = rez.site_id
-                                    WHERE rez.id = :code AND rez.is_cancelled = 0 
-                                    GROUP BY 
-                                            rez.id, 
-                                            rez.currency, 
-                                            site.payment_domain",
-                        [
-                            'code' => $this->data['id']
-                        ]);
-        
-        if(sizeof($rez) <= 0):
+        $this->data = $request->all();
+
+        $rez = DB::select("
+            SELECT
+                rez.id,
+                rez.currency,
+                site.payment_domain,
+                ROUND(COALESCE(SUM(s.total_sales), 0), 2) AS total_sales,
+                ROUND(COALESCE(SUM(p.total_payments), 0), 2) AS total_payments
+            FROM reservations AS rez
+
+            LEFT JOIN (
+                SELECT
+                    reservation_id,
+                    ROUND(COALESCE(SUM(total), 0), 2) AS total_sales
+                FROM sales
+                WHERE deleted_at IS NULL
+                  AND sales.sale_type_id <> 3
+                GROUP BY reservation_id
+            ) AS s
+                ON s.reservation_id = rez.id
+
+            LEFT JOIN (
+                SELECT
+                    reservation_id,
+                    ROUND(
+                        SUM(
+                            CASE
+                                WHEN operation = 'multiplication'
+                                    THEN total * exchange_rate
+                                WHEN operation = 'division'
+                                    THEN total / exchange_rate
+                                ELSE total
+                            END
+                        ),
+                        2
+                    ) AS total_payments,
+                    GROUP_CONCAT(
+                        DISTINCT payment_method
+                        ORDER BY payment_method ASC
+                        SEPARATOR ','
+                    ) AS payment_type_name
+                FROM payments
+                GROUP BY reservation_id
+            ) AS p
+                ON p.reservation_id = rez.id
+
+            INNER JOIN sites AS site
+                ON site.id = rez.site_id
+
+            WHERE rez.id = :code
+              AND rez.is_cancelled = 0
+
+            GROUP BY
+                rez.id,
+                rez.currency,
+                site.payment_domain
+        ", [
+            'code' => $this->data['id'],
+        ]);
+
+        if (sizeof($rez) <= 0) {
             $response['code'] = "cancelled";
             $response['message'] = "Your reservation has been cancelled, if you want to reactivate it contact us.";
-            return $response;
-        endif;
 
-        $total = $rez[0]->total_sales - $rez[0]->total_payments;
-        if($total <= 0):
+            return $response;
+        }
+
+        $total = (float) $rez[0]->total_sales
+            - (float) $rez[0]->total_payments;
+
+        if ($total <= 0) {
             $response['code'] = "payments";
             $response['message'] = "No payments to be made";
+
             return $response;
-        endif;
+        }
 
-        $total = $this->getExchange($rez[0]->currency, "MXN", $total);
-        if($request->link_code) {
-            $payment_link = PaymentLink::where('link_code', $request->link_code)->first();
+        /*
+        |--------------------------------------------------------------------------
+        | Sin conversión de moneda
+        |--------------------------------------------------------------------------
+        |
+        | Se usa directamente el total pendiente y la moneda de la reservación.
+        | No se convierte a MXN ni se consulta payments_exchange_rate.
+        |
+        */
 
-            if($payment_link && $payment_link->currency && $payment_link->amount) {
-                $total = $payment_link->amount;
-                $total = $this->getExchange($payment_link->currency, "MXN", $total);
+        $currency = strtoupper($rez[0]->currency);
+        $total = round($total, 2);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Enlace de pago
+        |--------------------------------------------------------------------------
+        |
+        | Si existe un PaymentLink válido, se usa directamente su monto
+        | y su moneda, sin ningún tipo de cambio.
+        |
+        */
+
+        if ($request->link_code) {
+            $paymentLink = PaymentLink::where(
+                'link_code',
+                $request->link_code
+            )->first();
+
+            if (
+                $paymentLink &&
+                $paymentLink->currency &&
+                $paymentLink->amount
+            ) {
+                $total = round((float) $paymentLink->amount, 2);
+                $currency = strtoupper($paymentLink->currency);
             }
         }
-        
+
         $data = [
             "total" => $total,
-            "currency" => "MXN",
-            "payment_domain" => $rez[0]->payment_domain
+            "currency" => $currency,
+            "payment_domain" => $rez[0]->payment_domain,
         ];
 
-        try{            
+        try {
             $key = config('services.stripe.key');
 
-            $stripe = new \Stripe\StripeClient( $key );
+            $stripe = new \Stripe\StripeClient($key);
+
             $product = $stripe->products->create([
-                'name' => (($request->language == "en")?'Transportation service':'Servicio de transportación'),
+                'name' => $request->language === "en"
+                    ? 'Transportation service'
+                    : 'Servicio de transportación',
             ]);
 
             $price = $stripe->prices->create([
-                'unit_amount' => ($data['total'] * 100),
-                'currency' => 'mxn',                
-                'product' => $product->id
+                'unit_amount' => (int) round($data['total'] * 100),
+                'currency' => strtolower($data['currency']),
+                'product' => $product->id,
             ]);
 
-            $checkout_session = $stripe->checkout->sessions->create([
+            $checkoutSession = $stripe->checkout->sessions->create([
                 'line_items' => [[
                     'price' => $price->id,
                     'quantity' => 1,
@@ -98,67 +164,53 @@ class StripeRepository{
                 'success_url' => $data['payment_domain'] . $request->success_url,
                 'cancel_url' => $data['payment_domain'] . $request->cancel_url,
                 'payment_intent_data' => [
-                    "metadata" => [ "reservation_id" => $request->id ]
-                ]
+                    'metadata' => [
+                        'reservation_id' => $request->id,
+                    ],
+                ],
             ]);
 
             $response['status'] = true;
-            $response['data'] = ['url' => $checkout_session->url];
-            return $response;            
+            $response['data'] = [
+                'url' => $checkoutSession->url,
+            ];
 
-        }catch(\Exception $e){
+            return $response;
+        } catch (\Exception $e) {
             $response['code'] = "stripe";
             $response['message'] = $e->getMessage();
+
             return $response;
         }
-
-
-
     }
 
-    public function getExchange($origin, $destination = "MXN", $total = 0){        
-        $items = DB::select('SELECT operation, exchange_rate
-                                FROM payments_exchange_rate
-                            WHERE origin = :origin AND destination = :destination
-                            LIMIT 1', 
-                        [
-                            'origin' => $origin,
-                            'destination' => $destination
-                        ]);
-
-        if($items[0]->operation == "multiplication"):
-            return number_format( ( $items[0]->exchange_rate * $total ) , 2, '.', '');            
-        else:
-            return number_format( ( $total / $items[0]->exchange_rate ) , 2, '.', '');       
-        endif;
-    }
-
-    public function createIntent($amount, $currency, $reservationId) {
+    public function createIntent($amount, $currency, $reservationId)
+    {
         $key = config('services.stripe.key');
 
-        $stripe = new \Stripe\StripeClient( $key );
+        $stripe = new \Stripe\StripeClient($key);
 
         return $stripe->paymentIntents->create([
-            'amount' => $amount * 100,
-            'currency' => $currency,
+            'amount' => (int) round(((float) $amount) * 100),
+            'currency' => strtolower($currency),
             'automatic_payment_methods' => [
                 'enabled' => true,
             ],
             'metadata' => [
                 'reservation_id' => $reservationId,
-            ]
+            ],
         ]);
     }
 
-    public function getIntent($intentId) {
+    public function getIntent($intentId)
+    {
         $key = config('services.stripe.key');
 
-        $stripe = new \Stripe\StripeClient( $key );
+        $stripe = new \Stripe\StripeClient($key);
 
         return $stripe->paymentIntents->retrieve(
             $intentId,
             []
         );
     }
-
 }
